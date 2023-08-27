@@ -1,5 +1,5 @@
 
-function drawFlowerSlice(_x, _y, _dir, _length, _thickness) {
+function drawFlowerSlice(_x, _y, _dir, _length, _thickness, _fromC, _toC) {
     let strokeCount = _length / 2;
 
     for (let i = 0; i < strokeCount; i++) {
@@ -15,8 +15,12 @@ function drawFlowerSlice(_x, _y, _dir, _length, _thickness) {
         else
             nowThickness = lerp(0.0, _thickness, easeOutSine((1.0 - t) * 2));
 
-        strokeWeight(random(1, 4));
-        stroke(0.0, 0.0, 100.0, 0.8);
+
+        let nowC = NYLerpColor(_fromC, _toC, t);
+        nowC.slightRandomize(10, 10, 20);
+
+        strokeWeight(random(1, 3));
+        stroke(nowC.h, nowC.s, nowC.b, nowC.a);
         noFill();
 
         push();
@@ -27,13 +31,18 @@ function drawFlowerSlice(_x, _y, _dir, _length, _thickness) {
     }
 }
 
-function drawNoiseLine(_x, _y, _dir, _length) {
+function drawNoiseLine(_x, _y, _dir, _length, _fromC, _toC) {
     let dotCount = _length / 2;
 
     let nowX = _x;
     let nowY = _y;
 
     for (let i = 0; i < dotCount; i++) {
+        let t = i / (dotCount - 1);
+        let nowC = NYLerpColor(_fromC, _toC, easeInQuad(t));
+
+        stroke(nowC.h, nowC.s, nowC.b);
+
         let pointSizeNoise = noise(nowX * 0.01, nowY * 0.01, 666);
         let nowSize = lerp(0.1, 2.0, pointSizeNoise);
         nowSize += random(0.0, 1.0);
@@ -55,7 +64,7 @@ function drawFlowBG(_yOffset) {
     let toColor = _mainColorSet.waterColor.copy();
 
     let waterColor = _mainColorSet.waterColor.color();
-    waterColor.setAlpha(0.1);
+    waterColor.setAlpha(0.14);
     tempBG.background(waterColor);
 
     let flowColor = _mainColorSet.waterFlowColor;

@@ -5,10 +5,14 @@ let tempBG;
 let waterBaseTall = 300;
 let _mainColorSet;
 
+let paintType = 'PORTRAIT';
+let paintXRange = [0.2, 0.8];
+let paintYRange = [-0.1, 1.4];
+
 async function setup() {
 
-  // createCanvas(windowWidth, windowHeight);
-  createCanvas(800, 800);
+  createCanvas(windowWidth, windowHeight);
+  // createCanvas(800, 800);
   colorMode(HSB);
 
   _mainColorSet = getRandomColorSet();
@@ -20,9 +24,11 @@ async function setup() {
 
   background(0, 0, 95);
 
-  for (let i = 0; i < 60; i++) {
-    let newX = random(0.3, 0.7) * width;
-    let newY = random(-0.1, 1.4) * height;
+  let plantCount = random(30, 200);
+
+  for (let i = 0; i < plantCount; i++) {
+    let newX = random(-0.2, 1.2) * width;
+    let newY = random(-0.2, 1.2) * height;
 
     let sameSpotCount = int(random(1, 6));
     for (let j = 0; j < sameSpotCount; j++) {

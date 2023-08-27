@@ -51,8 +51,36 @@ class PlantLili {
         this.totalSteps = int(this.tall / 0.6);
         this.nowStep = 0;
 
-        this.fromColor = new NYColor(60, 40, 40);
-        this.toColor = new NYColor(120, 60, 60);
+        let colorType = int(random(0, 3));
+
+        if (colorType == 0) {
+            this.fromColor = _mainColorSet.plantColorA.copy();
+            this.fromColor.slightRandomize(10, 10, 30);
+
+            this.toColor = _mainColorSet.plantColorB.copy();
+            this.toColor.slightRandomize(10, 10, 30);
+        }
+        else if (colorType == 1) {
+            this.fromColor = _mainColorSet.plantColorB.copy();
+            this.fromColor.slightRandomize(10, 10, 30);
+
+            this.toColor = _mainColorSet.plantColorA.copy();
+            this.toColor.slightRandomize(10, 10, 30);
+        }
+        else if (colorType == 2) {
+            this.fromColor = _mainColorSet.plantColorA.copy();
+            this.fromColor.slightRandomize(10, 10, 30);
+
+            this.toColor = _mainColorSet.plantColorA.copy();
+            this.toColor.slightRandomize(10, 10, 30);
+        }
+        else {
+            this.fromColor = _mainColorSet.plantColorB.copy();
+            this.fromColor.slightRandomize(10, 10, 30);
+
+            this.toColor = _mainColorSet.plantColorB.copy();
+            this.toColor.slightRandomize(10, 10, 30);
+        }
 
         this.fromX = _x;
         this.fromY = _y;
@@ -113,9 +141,12 @@ class PlantLili {
     }
 
     drawLeaf() {
-        let nowHue = 120 + random(-30, 30);
-        let nowSat = random(30, 60);
-        let nowBri = random(30, 80);
+
+        let leafMainColor = this.fromColor.copy();
+
+        let nowHue = processHue(leafMainColor.h + random(-20, 20));
+        let nowSat = leafMainColor.s + random(-20, 20);
+        let nowBri = leafMainColor.b + random(-20, 20);
 
         noStroke();
         fill(nowHue, nowSat, nowBri, 1.0);
@@ -130,12 +161,13 @@ class PlantLili {
             let arcBri = nowBri + random(-10, 10);
 
             if (random() < 0.08) {
-                arcHue = processHue(arcHue - 80);
+                arcHue = processHue(_mainColorSet.plantContrastColor.h + random(-20, 20));
             }
 
             if (random() < 0.06) {
-                arcSat = 0.0;
-                arcBri = 100.0;
+                arcHue = processHue(_mainColorSet.plantHighlightColor.h + random(-20, 20));
+                arcSat = _mainColorSet.plantHighlightColor.s;
+                arcBri = _mainColorSet.plantHighlightColor.b;
             }
             stroke(arcHue, arcSat, arcBri, 0.8);
 
@@ -162,7 +194,12 @@ class PlantLili {
             let nowLength = random(0.6, 1.2) * flowerLeafLength;
             let nowThickness = random(0.8, 1.2) * nowLength / 2;
 
-            drawFlowerSlice(this.toX, this.toY, sliceDegree, nowLength, nowThickness);
+            let fromColor = _mainColorSet.flowerInsideColor.copy();
+            let toColor = _mainColorSet.flowerOutsideColor.copy();
+            fromColor.slightRandomize(10, 10, 10);
+            toColor.slightRandomize(10, 10, 10);
+
+            drawFlowerSlice(this.toX, this.toY, sliceDegree, nowLength, nowThickness, fromColor, toColor);
         }
 
         // pistil
@@ -174,8 +211,12 @@ class PlantLili {
 
             let length = flowerLeafLength * random(0.6, 1.2);
 
-            stroke(52, 90, 95, 0.8);
-            drawNoiseLine(spawnX, spawnY, rotDegree, length);
+            let fromColor = _mainColorSet.pistilColorA.copy();
+            let toColor = _mainColorSet.pistilColorB.copy();
+            fromColor.slightRandomize(10, 10, 10);
+            toColor.slightRandomize(10, 10, 10);
+
+            drawNoiseLine(spawnX, spawnY, rotDegree, length, fromColor, toColor);
         }
 
         // front half
@@ -187,7 +228,12 @@ class PlantLili {
             let nowLength = random(0.3, 0.8) * flowerLeafLength;
             let nowThickness = random(0.8, 1.2) * nowLength / 2;
 
-            drawFlowerSlice(this.toX, this.toY + 3, sliceDegree, nowLength, nowThickness);
+            let fromColor = _mainColorSet.flowerOutsideColor.copy();
+            let toColor = _mainColorSet.flowerOutsideColor.copy();
+            fromColor.slightRandomize(10, 10, 10);
+            toColor.slightRandomize(10, 10, 10);
+
+            drawFlowerSlice(this.toX, this.toY + 3, sliceDegree, nowLength, nowThickness, fromColor, toColor);
         }
     }
 }
