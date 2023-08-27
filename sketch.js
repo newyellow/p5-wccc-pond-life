@@ -3,21 +3,26 @@ let lilis = [];
 let tempBG;
 
 let waterBaseTall = 300;
+let _mainColorSet;
 
 async function setup() {
 
-  createCanvas(windowWidth, windowHeight);
+  // createCanvas(windowWidth, windowHeight);
+  createCanvas(800, 800);
   colorMode(HSB);
+
+  _mainColorSet = getRandomColorSet();
+  console.log(_mainColorSet);
 
   tempBG = createGraphics(width, height);
   tempBG.colorMode(HSB);
-  tempBG.background(230, 40, 10);
+  tempBG.background(_mainColorSet.waterColor.color());
 
   background(0, 0, 95);
 
   for (let i = 0; i < 60; i++) {
-    let newX = random(-0.1, 1.1) * width;
-    let newY = random(-0.1, 1.1) * height;
+    let newX = random(0.3, 0.7) * width;
+    let newY = random(-0.1, 1.4) * height;
 
     let sameSpotCount = int(random(1, 6));
     for (let j = 0; j < sameSpotCount; j++) {

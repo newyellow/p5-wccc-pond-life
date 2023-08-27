@@ -52,19 +52,23 @@ function drawNoiseLine(_x, _y, _dir, _length) {
 }
 
 function drawFlowBG(_yOffset) {
-    let toColor = new NYColor(230, 40, 10);
+    let toColor = _mainColorSet.waterColor.copy();
 
-    tempBG.background(230, 40, 10, 0.16);
+    let waterColor = _mainColorSet.waterColor.color();
+    waterColor.setAlpha(0.1);
+    tempBG.background(waterColor);
 
-    for (let i = 0; i < 600; i++) {
-        let fromHue = 230 + random(-30, 30);
-        let fromSat = random(40, 60);
-        let fromBri = random(10, 80);
+    let flowColor = _mainColorSet.waterFlowColor;
+
+    for (let i = 0; i < 300; i++) {
+        let fromHue = processHue(flowColor.h + random(-10, 10));
+        let fromSat = flowColor.s + random(-10, 10);
+        let fromBri = flowColor.b + random(-20, 20);
 
         let fromColor = new NYColor(fromHue, fromSat, fromBri);
 
-        let nowX = random(-0.1, 1.0) * width;
-        let nowY = random(-0.1, 1.1) * height;
+        let nowX = random(-0.2, 1.0) * width;
+        let nowY = random(-0.2, 1.1) * height;
 
         let nowLength = random(0.03, 0.4) * min(width, height);
         let nowThickness = random(1.0, 3.0);

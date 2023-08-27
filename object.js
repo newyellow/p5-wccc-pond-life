@@ -18,6 +18,10 @@ class NYColor {
         this.a += random(-0.5 * _aDiff, 0.5 * _aDiff);
     }
 
+    color() {
+        return color(this.h, this.s, this.b, this.a);
+    }
+
     static newRandomColor(_mainHue) {
         let h = processHue(_mainHue + random(-30, 30));
         let s = random(40, 60);
